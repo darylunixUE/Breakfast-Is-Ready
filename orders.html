@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Breakfast Is Ready - Order</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bakbak+One&family=Bebas+Neue&family=Jost:wght@510&family=Magra:wght@400;700&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Pathway+Gothic+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Saira+Condensed:wght@100;200;300;400;500;600;700;800;900&family=Truculenta:opsz,wght@12..72,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .order-item img {
+      width: 50px;
+      height: 50px;
+      margin-top: -10px;
+      margin-left: 25px;
+    }
+    .readonly-input {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+    .col-md-1.d-flex button {
+      margin-bottom: 12px;
+    }
+    .summary-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.item-label {
+  font-weight: bold;
+}
+
+.item-value {
+  flex: 1;
+  text-align: right;
+}
+    .order-placed-message {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+      margin-bottom: 100px;
+    }
+  </style>
+</head>
+<body>
+    <div class="all-content">
+      <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" id="logo"><img src="logo.jpg"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-bars" style="color: white; font-size: 23px;"></i></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="menu.html">Menu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="orders.html">Order</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contact.html">Contact</a>
+              </li>
+            </ul>
+            <!-- Login and Signup Links -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="ChooseLogin.php">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="Registration.php">Signup</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+      </nav>
+
+    <section id="order">
+      <div class="container">
+        <div class="heading">Order <span>Here</span></div>
+        <form id="orderForm">
+          <div class="row mb-3">
+            <div class="col-md-1"></div>
+            <div class="col-md-2"><strong>Item</strong></div>
+            <div class="col-md-2"><strong>Size</strong></div>
+            <div class="col-md-1"><strong>Quantity</strong></div>
+            <div class="col-md-2"><strong>Price</strong></div>
+            <div class="col-md-2"><strong>Total</strong></div>
+            <div class="col-md-2"></div>
+          </div>
+          <div id="orderItems"></div>
+          <div class="mb-3">
+            <button type="button" class="btn btn-warning" id="addItem">Add Another Item</button>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="customerName" class="form-label">Name *</label>
+              <input type="text" class="form-control" id="customerName" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="customerEmail" class="form-label">Email *</label>
+              <input type="email" class="form-control" id="customerEmail" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="customerPhone" class="form-label">Phone *</label>
+              <input type="tel" class="form-control" id="customerPhone" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="paymentMethod" class="form-label">Payment Method *</label>
+              <select class="form-select" id="paymentMethod" required>
+                <option value="">Select payment method</option>
+                <option value="GCASH">GCASH</option>
+                <option value="Cash-On-Delivery">Cash-On-Delivery</option>
+              </select>
+            </div>
+            
+          </div>
+          <div class="mb-3">
+            <label for="totalPrice" class="form-label">Total Price</label>
+            <input type="text" class="form-control readonly-input" id="totalPrice" readonly>
+          </div>
+          <button type="submit" class="btn btn-success">Place Order</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="orderSummary" style="display: none;">
+      <div class="container">
+        <div class="heading">Order Summary</div>
+        <div class="order-placed-message">Your order has been placed!</div>
+        <div class="summary-section">
+          <div class="summary-item">
+            <div class="item-label">Ordered from</div>
+            <div class="item-value"><i class="fa-solid fa-store"></i> Breakfast Is Ready</div>
+          </div>
+          <div class="summary-item">
+            <div class="item-label">Total Items</div>
+            <div class="item-value"><i class="fa-solid fa-receipt"></i> <span id="itemCount"></span></div>
+          </div>
+          <div class="summary-item">
+            <div class="item-label">Total Price</div>
+            <div class="item-value"><i class="fa-solid fa-money-bill-wave"></i> <span id="summaryTotalPrice"></span></div>
+          </div>
+          <div class="summary-item">
+            <div class="item-label">Items</div>
+            <div class="item-value" id="summaryItems"></div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div><i class="fa-solid fa-credit-card"></i> Payment Method</div>
+            <div id="summaryPaymentMethod"></div>
+          </div>
+        </div>
+        <div id="summaryDetails" class="summary-details mt-4"></div>
+        <div class="text-center mt-4">
+          <button id="newOrderBtn" class="btn btn-primary">Place Another Order</button>
+        </div>
+      </div>
+    </section>
+
+      <div>
+        <footer class="footer text-white">
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-left mb-3 mb-md-0">
+                  <img src="logo.jpg" alt="Logo" class="footer-logo">
+                </div>
+                <div class="col-md-2 text-center">
+                  <div class="footer-links">
+                    <div><a href="index.html" class="footer-link">Home</a></div>
+                    <div><a href="about is.html" class="footer-link">About</a></div>
+                    <div><a href="menu.html" class="footer-link">Menu</a></div>
+                    <div><a href="orders.html" class="footer-link">Order</a></div>
+                  </div>
+                </div>
+        
+                <div class="col-md-2 text-center">
+                    <div class="footer-links">
+                      <div><a href="contact.html" class="footer-link">Contacts</a></div>
+                      <div><a href="#" class="footer-link">Sign In</a></div>
+                      <div><a href="#" class="footer-link">Sign Up</a></div>
+                    </div>
+                  </div>
+        
+                <div class="col-md-3 text-center text-md-right">
+                  <div class="social-media-title">Contact us on:</div>
+                  <a href="https://web.facebook.com/breakyready" class="text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                  <a href="breakfastisready2020@gmail.com" class="text-white mx-2"><i class="fa-regular fa-envelope"></i></a>
+                  <a href="https://www.instagram.com/breakfast.isready/" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+          </footer>
+        
+          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      </div>
+      <script>
+
+        
+        // Fetch items from get_items.php
+        fetch('get_items.php')
+          .then(response => response.json())
+          .then(data => {
+            // Prepare items array from fetched data
+            items = data.map(item => ({
+              name: item.Name,
+              img: item.Image, // Assuming you have image URLs in your data
+              price_regular: parseFloat(item.Price),
+              price_large: parseFloat(item.Price) + 20 // Assuming price_regular is the base price
+            }));
+      
+            // Initialize order items with the first item
+            resetOrderItem();
+          })
+          .catch(error => console.error('Error fetching items:', error));
+      
+        let orderItemCount = 1;
+      
+        function createOrderItem(index) {
+          const item = items[index];
+          return `
+            <div class="row order-item mb-3">
+              <div class="col-md-1">
+                <img src="${item.img}" alt="${item.name}">
+              </div>
+              <div class="col-md-2">
+                <select class="form-select item-select">
+                  ${items.map((item, i) => `<option value="${i}" ${i === index ? 'selected' : ''}>${item.name}</option>`).join('')}
+                </select>
+              </div>
+              <div class="col-md-2">
+                <select class="form-select size-select">
+                  <option value="regular">Regular</option>
+                  <option value="large">Large (+₱20)</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <input type="number" class="form-control quantity-input" min="1" value="1">
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control price-input readonly-input" value="₱${item.price_regular.toFixed(2)}" readonly>
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control total-input readonly-input" value="₱${item.price_regular.toFixed(2)}" readonly>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <button type="button" class="btn btn-danger remove-item">Remove</button>
+              </div>
+            </div>`;
+        }
+      
+        // Function to update total price based on items and quantities
+        function updateTotalPrice() {
+          let totalPrice = 0;
+          document.querySelectorAll('.order-item').forEach(orderItem => {
+            const priceField = orderItem.querySelector('.price-input');
+            const quantity = parseInt(orderItem.querySelector('.quantity-input').value);
+            totalPrice += parseFloat(priceField.value.replace('₱', '')) * quantity;
+          });
+          document.getElementById('totalPrice').value = '₱' + totalPrice.toFixed(2);
+        }
+      
+        // Function to reset order items (initialization)
+        function resetOrderItem() {
+          orderItemCount = 1;
+          const orderItemsContainer = document.getElementById('orderItems');
+          orderItemsContainer.innerHTML = createOrderItem(0);
+          updateTotalPrice();
+        }
+      
+        document.addEventListener('DOMContentLoaded', function() {
+          // Function to handle quantity input validation and reset
+    function handleQuantityInput(input) {
+      const quantity = parseInt(input.value);
+      if (quantity <= 0) {
+        input.value = '1'; // Reset to 1 if less than or equal to 0
+      }
+    }
+
+    // Event listener for handling quantity input blur
+    document.addEventListener('blur', function(event) {
+      if (event.target.classList.contains('quantity-input')) {
+        handleQuantityInput(event.target);
+      }
+    }, true); // Use capture phase to ensure early validation
+
+    document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('quantity-input')) {
+    const quantityInput = event.target;
+    if (parseInt(quantityInput.value) <= 0) {
+      quantityInput.value = '1';
+    }
+    updateTotalPrice();
+  }
+});
+
+          // Event listener for adding another item
+          document.getElementById('addItem').addEventListener('click', function() {
+            const orderItemsContainer = document.getElementById('orderItems');
+            orderItemsContainer.insertAdjacentHTML('beforeend', createOrderItem(0));
+            orderItemCount++;
+            updateTotalPrice();
+          });
+      
+          // Event listener for payment method selection
+          document.getElementById('paymentMethod').addEventListener('change', function() {
+    const selectedMethod = this.value;
+    const customerPhone = document.getElementById('customerPhone').value;
+    const summaryPaymentMethod = document.getElementById('summaryPaymentMethod');
+
+    if (selectedMethod === 'GCASH') {
+        summaryPaymentMethod.innerHTML = `<i class="fa-solid fa-credit-card"></i> ${selectedMethod} (${customerPhone})`;
+    } else {
+        summaryPaymentMethod.innerHTML = `<i class="fa-solid fa-credit-card"></i> ${selectedMethod}`;
+    }
+});
+      
+          // Event listener for form submission (placing order)
+          document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (orderItemCount === 0) {
+              alert('Please add at least one item to your order.');
+              return;
+            }
+            document.getElementById('order').style.display = 'none';
+            document.getElementById('orderSummary').style.display = 'block';
+      
+            // Prepare selected items for summary
+            const selectedItems = [];
+            document.querySelectorAll('.order-item').forEach(orderItem => {
+              const itemIndex = orderItem.querySelector('.item-select').value;
+              const quantity = parseInt(orderItem.querySelector('.quantity-input').value);
+              const size = orderItem.querySelector('.size-select').value;
+              selectedItems.push(`${items[itemIndex].name} (${size}, x${quantity})`);
+            });
+      
+            // Update summary section with order details
+            document.getElementById('itemCount').innerText = ` Total items ordered: ${selectedItems.length}`;
+            document.getElementById('summaryTotalPrice').innerText = document.getElementById('totalPrice').value;
+            document.getElementById('summaryItems').innerText = selectedItems.join(', ');
+      
+            // Prepare form data to send
+            const formData = new FormData();
+            formData.append('customerName', document.getElementById('customerName').value);
+            formData.append('customerEmail', document.getElementById('customerEmail').value);
+            formData.append('customerPhone', document.getElementById('customerPhone').value);
+            formData.append('summaryItems', selectedItems.join(', '));
+
+            let totalPrice = document.getElementById('totalPrice').value;
+// Remove the peso sign '₱' if it exists
+if (totalPrice.startsWith('₱')) {
+    totalPrice = totalPrice.substring(1); // Remove the first character (₱)
+}
+            formData.append('summaryTotalPrice', totalPrice);
+            formData.append('summaryPaymentMethod', document.getElementById('paymentMethod').value);
+      
+            // Send form data to get_transaction.php using fetch API
+            fetch('get_transaction.php', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => response.text())
+              .then(data => {
+                console.log(data); // Handle success message or redirect
+              })
+              .catch(error => {
+                console.error('Error:', error); // Handle errors
+              });
+      
+            // Update summary details message
+            document.getElementById('summaryDetails').innerHTML = `
+              <h4>Thank you for your order, ${document.getElementById('customerName').value}!</h4>
+              <p>Kindly wait for our staff to contact your number ${document.getElementById('customerPhone').value}.</p>
+            `;
+          });
+      
+          // Event listener for starting a new order after completing one
+          document.getElementById('newOrderBtn').addEventListener('click', function() {
+            document.getElementById('orderSummary').style.display = 'none';
+            document.getElementById('order').style.display = 'block';
+            document.getElementById('orderForm').reset();
+            resetOrderItem();
+          });
+      
+          resetOrderItem(); // Initialize order items
+        });
+      
+        // Event listener for handling changes in order items (size, quantity, etc.)
+        document.addEventListener('change', function(event) {
+          if (event.target.classList.contains('size-select')) {
+            // Handle size selection change
+            const orderItem = event.target.closest('.order-item');
+            const itemIndex = orderItem.querySelector('.item-select').value;
+            const size = event.target.value;
+            const priceField = orderItem.querySelector('.price-input');
+            const totalField = orderItem.querySelector('.total-input');
+      
+            if (size === 'regular') {
+              priceField.value = '₱' + items[itemIndex].price_regular.toFixed(2);
+              totalField.value = '₱' + (items[itemIndex].price_regular * parseInt(orderItem.querySelector('.quantity-input').value)).toFixed(2);
+            } else if (size === 'large') {
+              priceField.value = '₱' + items[itemIndex].price_large.toFixed(2);
+              totalField.value = '₱' + (items[itemIndex].price_large * parseInt(orderItem.querySelector('.quantity-input').value)).toFixed(2);
+            }
+      
+            updateTotalPrice();
+          } else if (event.target.classList.contains('item-select')) {
+            // Handle item selection change
+            const orderItem = event.target.closest('.order-item');
+            const itemIndex = event.target.value;
+            orderItem.querySelector('img').src = items[itemIndex].img;
+            const itemPrice = items[itemIndex].price_regular; // Assuming default to regular size
+            orderItem.querySelector('.price-input').value = '₱' + itemPrice.toFixed(2);
+            const quantity = parseInt(orderItem.querySelector('.quantity-input').value);
+            orderItem.querySelector('.total-input').value = '₱' + (itemPrice * quantity).toFixed(2);
+            updateTotalPrice();
+          } else if (event.target.classList.contains('quantity-input')) {
+            // Handle quantity change
+            const orderItem = event.target.closest('.order-item');
+            const price = parseFloat(orderItem.querySelector('.price-input').value.replace('₱', ''));
+            const quantity = parseInt(event.target.value);
+            orderItem.querySelector('.total-input').value = '₱' + (price * quantity).toFixed(2);
+            updateTotalPrice();
+          }
+        });
+      
+        // Event listener for removing an item from order
+        document.addEventListener('click', function(event) {
+          if (event.target.classList.contains('remove-item')) {
+            event.target.closest('.order-item').remove();
+            orderItemCount--;
+            updateTotalPrice();
+          }
+        });
+      </script>
+</body>
+</html>
